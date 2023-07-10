@@ -1,0 +1,11 @@
+.App {
+  display: flex;
+  margin: 0 30px;
+}
+
+.timeCode_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
