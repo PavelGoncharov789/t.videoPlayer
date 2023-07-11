@@ -10,18 +10,15 @@ import {
   
   function* getNewsWorker(): any {    
     try {
-      // throw new Error("лять");
-      
       const response = yield call(() => fetch(TAIMSDATA));
       const data = yield call(() =>  response.json());
       
       if (data) {
-        console.log("asdas", data);
         yield put({ type: actionTypes.GET_DATA_SUCCESS, payload: data });
       } else {
         yield put({ type: actionTypes.GET_DATA_FAIL, payload:'Данные отсутствуют!' });
       }
-    } catch (e: any) { 
+    } catch (e: any) {
       yield put({ type: actionTypes.GET_DATA_FAIL, payload: e.message });
     }
   }

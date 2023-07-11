@@ -1,30 +1,57 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect
+} from "react";
 import { useDispatch, useSelector } from "react-redux/es/exports";
+
 import { GET_DATA } from "./store/actionTypes";
 
 import "./App.css";
 
+type coordinatesType = {
+  id: number,
+  duration: number,
+  timestamp: number,
+  time?: string,
+  zone: {
+    height: number,
+    left: number,
+    top: number,
+    width: number,
+  } 
+};
+
 function App() {
-  const [progress, setProgress] = useState(0);
+  const [renderTimeCodes, setRenderTimeCode] = useState([]);
   const videoRef: any = useRef(null);
   const dispatch = useDispatch();
-  const figureArray = useSelector((state: any) => state.coordinates);
-  console.log("figureArray", figureArray);
-  
+  const timeCodes = useSelector((state: any) => state.coordinates);
+
 
   useEffect(() => {
     dispatch({ type: GET_DATA });
   }, []);
 
-  const handleProgress = () => {
-    const duration = videoRef.current.duration;
-    const currentTime = videoRef.current.currentTime;
-    const progress = (currentTime / duration) * 100;
-    setProgress(progress);
-  };
+  function msToTime(duration: number) {
+    let milliseconds = Math.floor((duration % 1000));
+    let seconds = Math.floor((duration / 1000) % 60);
+    let minutes = Math.floor((duration / (1000 * 60)) % 60);
 
-  const handleTime = () => {
-    videoRef.current.currentTime = 200.0;
+    return minutes + ":" + seconds + ":" + milliseconds;
+  }
+
+  useEffect(() => {
+    timeCodes.map((item: coordinatesType) => {
+      item.time = msToTime(item.timestamp);
+    });
+    setRenderTimeCode(timeCodes);
+  }, [timeCodes]);
+
+  const handleTime = (time: number) => {
+    let seconds = Math.floor((time / 1000));
+    let milliseconds = Math.floor((time % 1000))
+    videoRef.current.currentTime = Number(seconds + "." + milliseconds);
   };
 
   return (
@@ -35,7 +62,6 @@ function App() {
           height="800px"
           controls
           ref={videoRef}
-          onTimeUpdate={handleProgress}
         >
           <source
             src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
@@ -44,7 +70,9 @@ function App() {
         </video>
       </div>
       <div className="timeCode_container">
-        <button onClick={handleTime}>Кнопашка</button>
+        {renderTimeCodes.map((item: coordinatesType) => {
+          return  <button onClick = {() => handleTime(item?.timestamp)}>{item?.time}</button>
+        })}
       </div>
     </div>
   );
