@@ -45,6 +45,8 @@ function App() {
     timeCodes.map((item: coordinatesType) => {
       item.time = msToTime(item.timestamp);
     });
+
+    timeCodes.sort((a:any, b :any) => a.timestamp - b.timestamp)
     setRenderTimeCode(timeCodes);
   }, [timeCodes]);
 
@@ -73,7 +75,7 @@ function App() {
       </div>
       <div className="timeCode_container">
         {renderTimeCodes.map((item: coordinatesType) => {
-          return  <button onClick = {() => handleTime(item?.timestamp)}>{item?.time}</button>
+          return  <button className="button-time" onClick = {() => handleTime(item?.timestamp)}>{item?.time}</button>
         })}
       </div>
     </div>
