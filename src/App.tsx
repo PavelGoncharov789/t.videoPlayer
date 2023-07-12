@@ -1,7 +1,7 @@
 import React, {
   useState,
   useRef,
-  useEffect
+  useEffect,
 } from "react";
 import { useDispatch, useSelector } from "react-redux/es/exports";
 
@@ -24,7 +24,7 @@ type coordinatesType = {
 
 function App() {
   const [renderTimeCodes, setRenderTimeCode] = useState([]);
-  const videoRef: any = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const dispatch = useDispatch();
   const timeCodes = useSelector((state: any) => state.coordinates);
 
@@ -50,8 +50,10 @@ function App() {
 
   const handleTime = (time: number) => {
     let seconds = Math.floor((time / 1000));
-    let milliseconds = Math.floor((time % 1000))
-    videoRef.current.currentTime = Number(seconds + "." + milliseconds);
+    let milliseconds = Math.floor((time % 1000));
+    if (videoRef.current) {
+      videoRef.current.currentTime = Number(seconds + "." + milliseconds);
+    }
   };
 
   return (
