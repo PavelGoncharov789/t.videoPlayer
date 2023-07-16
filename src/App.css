@@ -1,6 +1,6 @@
 .App {
   display: flex;
-  margin: 0 30px;
+  margin: 50px 30px 0px 30px;
 }
 
 .video_container {
@@ -15,10 +15,21 @@
   align-items: flex-start;
   margin-left: 30px;
   width: 100%;
+  width: 1270px;
+  height: 720px;
 }
 
 .button-time {
   border: none;
   background: none;
   cursor: pointer;
+}
+
+.rectangle {
+  position: absolute !important;
+  /* z-index: 10000; */
+  background-color: green;
+  /* width: 100vw !important;
+  height: 100vh !important  ; */
+  position: absolute;
 }
